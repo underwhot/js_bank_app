@@ -52,7 +52,9 @@ const inputLoanAmount = document.querySelector(".form__input--loan-amount");
 const inputCloseUsername = document.querySelector(".form__input--user");
 const inputClosePin = document.querySelector(".form__input--pin");
 
-function movementsHendler(movements) {
+//
+
+function displayMovements(movements) {
   containerMovements.innerHTML = "";
 
   movements.forEach(function (amount, index) {
@@ -69,4 +71,12 @@ function movementsHendler(movements) {
   });
 }
 
-movementsHendler(account1.movements);
+displayMovements(account1.movements);
+
+function createLogIn(accs) {
+  accs.forEach(function(acc) {
+    acc.logIn = acc.owner.toLowerCase().split(' ').map(item => item[0]).join('');
+  })
+}
+
+createLogIn(accounts);
