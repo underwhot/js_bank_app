@@ -51,3 +51,22 @@ const inputTransferAmount = document.querySelector(".form__input--amount");
 const inputLoanAmount = document.querySelector(".form__input--loan-amount");
 const inputCloseUsername = document.querySelector(".form__input--user");
 const inputClosePin = document.querySelector(".form__input--pin");
+
+function movementsHendler(movements) {
+  containerMovements.innerHTML = "";
+
+  movements.forEach(function (amount, index) {
+    const type = amount > 0 ? "deposit" : "withdrawal";
+    const operationName = amount > 0 ? "Зачисление" : "Снятие";
+    const html = `
+      <div class="movements__row">
+        <div class="movements__type movements__type--${type}">${index+1} ${operationName}</div>
+        <div class="movements__date">3 дня назад</div>
+        <div class="movements__value">${amount}₽</div>
+      </div>
+    `;
+    containerMovements.insertAdjacentHTML("afterbegin", html);
+  });
+}
+
+movementsHendler(account1.movements);
