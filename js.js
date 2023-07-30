@@ -53,7 +53,6 @@ const inputCloseUsername = document.querySelector(".form__input--user");
 const inputClosePin = document.querySelector(".form__input--pin");
 
 //
-
 function displayMovements(movements) {
   containerMovements.innerHTML = "";
 
@@ -73,6 +72,7 @@ function displayMovements(movements) {
 
 displayMovements(account1.movements);
 
+//
 function createLogIn(accs) {
   accs.forEach(function(acc) {
     acc.logIn = acc.owner.toLowerCase().split(' ').map(item => item[0]).join('');
@@ -80,3 +80,12 @@ function createLogIn(accs) {
 }
 
 createLogIn(accounts);
+
+//
+function calcPrintBalance(movements) {
+  labelBalance.textContent = movements.reduce(function(acc, val) {
+    return acc + val;
+  }) + '₽';
+}
+
+calcPrintBalance(account1.movements);
