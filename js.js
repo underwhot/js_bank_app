@@ -72,8 +72,6 @@ function displayMovements(movements) {
   });
 }
 
-displayMovements(account1.movements);
-
 // Creating login from name in object
 function createLogIn(accs) {
   accs.forEach(function (acc) {
@@ -95,29 +93,36 @@ function calcPrintBalance(movements) {
     }) + "₽";
 }
 
-calcPrintBalance(account1.movements);
-
 // Income and outcome calc summ and print at footer
 function calcPrintValues(movements) {
   const income = movements
-    .filter(function (val) {
-      return val > 0;
-    })
-    .reduce(function (acc, val) {
-      return acc + val;
-    });
+    .filter((val) => val > 0)
+    .reduce((acc, val) => acc + val);
 
   const outcome = movements
-    .filter(function (val) {
-      return val < 0;
-    })
-    .reduce(function (acc, val) {
-      return acc + val;
-    });
+    .filter((val) => val < 0)
+    .reduce((acc, val) => acc + val);
 
   labelSumIn.textContent = income + "₽";
   labelSumOut.textContent = Math.abs(outcome) + "₽";
   labelSumInterest.textContent = income + outcome + "₽";
 }
 
-calcPrintValues(account1.movements);
+// Login in to accaunt
+let currentAccount;
+
+btnLogin.addEventListener("click", function (e) {
+  e.preventDefault();
+
+  currentAccount = accounts.find(function (acc) {
+    return acc.logIn === inputLoginUsername.value;
+  });
+
+  if (currentAccount && currentAccount.pin === +inputLoginPin.value) {
+    containerApp.style.opacity = 100;
+    inputLoginUsername.value = inputLoginPin.value = "";
+    displayMovements(currentAccount.movements);
+    calcPrintBalance(currentAccount.movements);
+    calcPrintValues(currentAccount.movements);
+  }
+});
