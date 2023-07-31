@@ -174,3 +174,16 @@ btnClose.addEventListener("click", function (e) {
     console.log(accounts);
   }
 });
+
+// Balance replenishment
+btnLoan.addEventListener("click", function (e) {
+  e.preventDefault();
+
+  const amount = +inputLoanAmount.value;
+
+  if (amount > 0) {
+    currentAccount.movements.push(amount);
+    updateUi(currentAccount);
+    inputLoanAmount.value = "";
+  }
+});
