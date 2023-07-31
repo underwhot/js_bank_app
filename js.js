@@ -86,11 +86,10 @@ function createLogIn(accs) {
 createLogIn(accounts);
 
 // Calc and print common balance on page
-function calcPrintBalance(movements) {
-  labelBalance.textContent =
-    movements.reduce(function (acc, val) {
-      return acc + val;
-    }) + "₽";
+function calcPrintBalance(acc) {
+  acc.balance = acc.movements.reduce((acc, val) => acc + val);
+
+  labelBalance.textContent = acc.balance + "₽";
 }
 
 // Income and outcome calc summ and print at footer
@@ -121,8 +120,35 @@ btnLogin.addEventListener("click", function (e) {
   if (currentAccount && currentAccount.pin === +inputLoginPin.value) {
     containerApp.style.opacity = 100;
     inputLoginUsername.value = inputLoginPin.value = "";
-    displayMovements(currentAccount.movements);
-    calcPrintBalance(currentAccount.movements);
-    calcPrintValues(currentAccount.movements);
+    updateUi(currentAccount);
+  }
+});
+
+// Update UI
+function updateUi(acc) {
+  displayMovements(acc.movements);
+  calcPrintBalance(acc);
+  calcPrintValues(acc.movements);
+}
+
+// Transfer cash between accounts
+btnTransfer.addEventListener("click", function (e) {
+  e.preventDefault();
+
+  const reciveAcc = accounts.find(function (acc) {
+    return acc.logIn === inputTransferTo.value;
+  });
+  const amount = +inputTransferAmount.value;
+
+  if (
+    reciveAcc &&
+    amount > 0 &&
+    currentAccount.balance >= amount &&
+    reciveAcc.logIn !== currentAccount.logIn
+  ) {
+    currentAccount.movements.push(-amount);
+    reciveAcc.movements.push(amount);
+    updateUi(currentAccount);
+    inputTransferTo.value = inputTransferAmount.value = "";
   }
 });
