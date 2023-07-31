@@ -98,9 +98,12 @@ function calcPrintValues(movements) {
     .filter((val) => val > 0)
     .reduce((acc, val) => acc + val);
 
-  const outcome = movements
-    .filter((val) => val < 0)
-    .reduce((acc, val) => acc + val);
+  let outcome = movements.filter((val) => val < 0);
+  if (outcome.length) {
+    outcome = outcome.reduce((acc, val) => acc + val);
+  } else {
+    outcome = 0;
+  }
 
   labelSumIn.textContent = income + "₽";
   labelSumOut.textContent = Math.abs(outcome) + "₽";
@@ -150,5 +153,24 @@ btnTransfer.addEventListener("click", function (e) {
     reciveAcc.movements.push(amount);
     updateUi(currentAccount);
     inputTransferTo.value = inputTransferAmount.value = "";
+  }
+});
+
+// Remove account
+btnClose.addEventListener("click", function (e) {
+  e.preventDefault();
+
+  if (
+    inputCloseUsername.value === currentAccount.logIn &&
+    +inputClosePin.value === currentAccount.pin
+  ) {
+    const index = accounts.findIndex(function (acc) {
+      return acc.logIn === currentAccount.logIn;
+    });
+    accounts.splice(index, 1);
+    containerApp.style.opacity = 0;
+
+    inputCloseUsername.value = inputClosePin.value = "";
+    console.log(accounts);
   }
 });
