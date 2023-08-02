@@ -200,6 +200,9 @@ btnSort.addEventListener("click", function (e) {
   sorted = !sorted;
 });
 
+
+// Additionla functions
+
 // Calc balance from all accounts
 // const accMov = accounts.map(function(acc) {
 //   return acc.movements;
@@ -219,3 +222,27 @@ const allBalance = accounts
   .flat()
   .reduce((acc, val) => acc + val);
 console.log(allBalance);
+
+// Replace '₽' to 'RUB'
+// labelBalance.addEventListener('click', function() {
+//   Array.from(document.querySelectorAll('.movements__value'), function(val, i) {
+//     return val.innerText = val.textContent.replace('₽', 'RUB');
+//   })
+// })
+
+let balanceFormat = true;
+labelBalance.addEventListener('click', function() {
+  const valuesCollection = document.querySelectorAll('.movements__value');
+
+  if (balanceFormat) {
+    Array.from(valuesCollection, function(val, i) {
+      balanceFormat = false;
+      return val.innerText = val.textContent.replace('₽', 'RUB');
+    })
+  } else {
+    Array.from(valuesCollection, function(val) {
+      balanceFormat = true;
+      return val.innerText = val.textContent.replace('RUB', '₽')
+    })
+  }
+})
