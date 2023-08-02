@@ -53,10 +53,12 @@ const inputCloseUsername = document.querySelector(".form__input--user");
 const inputClosePin = document.querySelector(".form__input--pin");
 
 // Print on page all сash movements
-function displayMovements(movements) {
+function displayMovements(movements, sort = false) {
   containerMovements.innerHTML = "";
 
-  movements.forEach(function (amount, index) {
+  const movs = sort ? movements.slice().sort((a, b) => a - b) : movements;
+
+  movs.forEach(function (amount, index) {
     const type = amount > 0 ? "deposit" : "withdrawal";
     const operationName = amount > 0 ? "Зачисление" : "Снятие";
     const html = `
@@ -187,3 +189,33 @@ btnLoan.addEventListener("click", function (e) {
     inputLoanAmount.value = "";
   }
 });
+
+// Sort balance
+let sorted = false;
+
+btnSort.addEventListener("click", function (e) {
+  e.preventDefault();
+
+  displayMovements(currentAccount.movements, !sorted);
+  sorted = !sorted;
+});
+
+// Calc balance from all accounts
+// const accMov = accounts.map(function(acc) {
+//   return acc.movements;
+// })
+// console.log(accMov);
+
+// const allMov = accMov.flat();
+// console.log(allMov);
+
+// const allAmount = allMov.reduce(function(acc, val) {
+//   return acc + val;
+// })
+// console.log(allAmount);
+
+const allBalance = accounts
+  .map((acc) => acc.movements)
+  .flat()
+  .reduce((acc, val) => acc + val);
+console.log(allBalance);
